@@ -163,7 +163,7 @@ function showAllMine() {
             if (hasMine === MineSweeper.NONE) {
                 arrMines[row][col].render();
             } else if (hasMine === MineSweeper.MINE) {
-                arrMines[row][col].render('#A0A0A0');
+                arrMines[row][col].render('#808080');
             }
         }
     }
