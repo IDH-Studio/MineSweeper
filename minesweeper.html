@@ -1,0 +1,79 @@
+<!-- 
+    지뢰찾기
+    since 2022.02.27
+-->
+
+<!-- 
+    기능
+    ■ 크기 지정 -> ㅁ X ㅁ (정사각형)
+    ■ 지뢰 개수 정하기
+    ■ 랜덤으로 지뢰 지정하기
+    ■ 좌클릭 시 지뢰일 경우 모든 지뢰를 보여주며 종료
+    □ 우클릭 시 지뢰 표시
+-->
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Minesweeper</title>
+        <style>
+            body {
+                padding: 0;
+                margin: 0;
+            }
+
+            #setting {
+                display: inline-block;
+                padding: 10px 0 0 10px;
+                /* border: 1px solid grey; */
+                font-size: 18pt;
+            }
+
+            #setting input {
+                width: 20px;
+                height: 20px;
+                font-size: 15pt;
+                text-align: center;
+                padding: 5px;
+            }
+
+            #setting button {
+                width: 40px;
+                height: 37px;
+                margin-bottom: 5px;
+                /* text-align: center; */
+                border: 1px solid black;
+                border-radius: 10px;
+                padding: 0;
+                box-shadow: 0 3px 2px grey;
+                transition: .3s;
+                cursor: pointer;
+            }
+
+            #setting button:hover {
+                box-shadow: none;
+                transform: translateY(3px);
+            }
+
+            #setting button:active {
+                background-color: #CFCFCF;
+            }
+
+            canvas {
+                border: 1px solid gray;
+                border-radius: 15px;
+                margin: 10px 0 0 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="setting">
+            size: <input type="text" name="size">
+            mine count: <input type="text" name="mine-count">
+            <button onclick="start()">Start</button>
+        </div> <br>
+        <canvas id="canvas"></canvas>
+        <script src="minesweeper.js"></script>
+    </body>
+</html>
