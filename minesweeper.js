@@ -1,4 +1,4 @@
-function getElement(type, element, parent=document) {
+function getElement(type, element, parent = document) {
     if (type === 'id')
         return parent.getElementById(element);
     else if (type === 'class')
@@ -30,25 +30,30 @@ const ctx = canvas.getContext('2d');
 var mineSize = 100;
 var arrMines = [];
 var mine_pos = [];
-var boardColor = '#A0A0A0';
+var boardColor = '#EEEEEE';
 var isGameOver = false;
 
 class Mine {
-    constructor(row, col, hasMine=MineSweeper.NONE) {
+    constructor(row, col, hasMine = MineSweeper.NONE) {
         this.size = mineSize;
         this.strokeSize = mineSize / 10;
         this.x = col * this.size;
         this.y = row * this.size;
         this.index = row + col;
         this.hasMine = hasMine;
+        this.img = new Image();
+        this.img.src = 'img/NonMine.png';
     }
 
-    render(fillStyle=boardColor) {
+    render(fillStyle = boardColor) {
         ctx.fillStyle = fillStyle;
         ctx.strokeStyle = 'black';
         ctx.fillRect(this.x, this.y, this.size - 1, this.size - 1);
         ctx.strokeRect(this.x, this.y, this.size, this.size);
-        // console.log('render');
+    }
+
+    renderImage() {
+        ctx.drawImage(this.img, this.x, this.y, this.size, this.size)
     }
 
     getHasMine() {
@@ -57,14 +62,19 @@ class Mine {
 
     setMine() {
         this.hasMine = MineSweeper.MINE;
+        this.img.src = 'img/Mine.png';
+    }
+
+    setNonMine() {
+        this.hasMine = MineSweeper.NonMine;
     }
 
     isClicked(mousePos) {
         if ((this.x < mousePos.x && mousePos.x < this.x + this.size)
             && (this.y < mousePos.y && mousePos.y < this.y + this.size)) {
-                // console.log(this.index +' isClicked');
-                return true;
-            }
+            // console.log(this.index +' isClicked');
+            return true;
+        }
         else {
             return false;
         }
@@ -80,9 +90,9 @@ function init() {
 
     setField(size);
     createMines(size);
-    
+
     e_canvas.onclick = e => {
-        const mousePos =  {
+        const mousePos = {
             'x': e.offsetX,
             'y': e.offsetY,
         };
@@ -130,11 +140,13 @@ function clickCheck(mousePos) {
     // console.log(mousePos);
     for (let row = 0; row < size; ++row) {
         for (let col = 0; col < size; ++col) {
-            if(arrMines[row][col].isClicked(mousePos)) {
+            if (arrMines[row][col].isClicked(mousePos)) {
                 mine_pos.find(minePos => {
                     if ((minePos[0] == row && minePos[1] == col)
-                    || (minePos[0] == col && minePos[1] == row)) {
+                        || (minePos[0] == col && minePos[1] == row)) {
                         isGameOver = true;
+                    } else {
+                        minePos.setNonMine();
                     }
                 })
                 return;
@@ -160,11 +172,19 @@ function showAllMine() {
         for (let col = 0; col < size; ++col) {
             const hasMine = arrMines[row][col].hasMine;
 
+            // if (hasMine === MineSweeper.NONE) {
+            //     arrMines[row][col].render();
+            // } else if (hasMine === MineSweeper.MINE) {
+            //     // arrMines[row][col].render('#808080');
+            //     arrMines[row][col].renderImage;
+            // } 
+
             if (hasMine === MineSweeper.NONE) {
                 arrMines[row][col].render();
-            } else if (hasMine === MineSweeper.MINE) {
-                arrMines[row][col].render('#808080');
+                continue;
             }
+
+            arrMines[row][col].renderImage();
         }
     }
 
